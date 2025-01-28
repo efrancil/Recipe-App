@@ -11,9 +11,14 @@ struct RecipeListView: View {
     @State var recipeListViewModel: RecipeListViewModel
     
     var body: some View {
-        List {
-            ForEach(recipeListViewModel.recipes) { recipe in
-                RecipeView(recipe: recipe)
+        if recipeListViewModel.recipes.isEmpty {
+            Text("No recipes are available")
+                .font(.headline)
+        } else {
+            List {
+                ForEach(recipeListViewModel.recipes) { recipe in
+                    RecipeView(recipe: recipe)
+                }
             }
         }
     }
