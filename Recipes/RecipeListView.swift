@@ -20,6 +20,7 @@ struct RecipeListView: View {
                     RecipeView(recipe: recipe)
                 }
             }
+            .redacted(reason: recipeListViewModel.isLoading ? .placeholder : [])
         }
     }
 }

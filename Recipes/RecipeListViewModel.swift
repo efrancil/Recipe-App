@@ -14,6 +14,7 @@ import Foundation
     }
     
     var recipes: [Recipe] = []
+    var isLoading: Bool = true
     
     init(recipes: [Recipe] = []) {
         self.recipes = recipes
@@ -32,6 +33,7 @@ import Foundation
                     let decoder = JSONDecoder()
                     if let decodedRecipes: Recipes = try? decoder.decode(Recipes.self, from: data) {
                         self.recipes = decodedRecipes.recipes
+                        self.isLoading = false
                     }
                 }
             }
