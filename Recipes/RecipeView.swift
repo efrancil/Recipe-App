@@ -14,8 +14,8 @@ struct RecipeView: View {
     var body: some View {
         VStack {
             HStack {
-                if let url = recipe.photo_url_small {
-                    AsyncImage(url: URL(string: url)) { image in
+                if let url = recipe.photoURLSmall {
+                    AsyncImage(url: url) { image in
                         image.resizable()
                     } placeholder: {
                         ProgressView()
@@ -46,5 +46,5 @@ struct RecipeView: View {
 }
 
 #Preview {
-    RecipeView(recipe: Recipe(cuisine: "Cuisine", name: "Food", photo_url_large: nil, photo_url_small: nil, source_url: nil, youtube_url: nil))
+    RecipeView(recipe: Recipe(cuisine: "Cuisine", name: "Food", photoURLLarge: nil, photoURLSmall: nil, uuid: "1", sourceURL: nil, youtubeURL: nil))
 }

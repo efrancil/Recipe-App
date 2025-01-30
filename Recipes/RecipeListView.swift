@@ -25,5 +25,5 @@ struct RecipeListView: View {
 }
 
 #Preview {
-    RecipeListView(recipeListViewModel: RecipeListViewModel(recipes: [Recipe(cuisine: "Italian", name: "Pasta", photo_url_large: nil, photo_url_small: nil, source_url: nil, youtube_url: nil), Recipe(cuisine: "Chinese", name: "Orange Chicken", photo_url_large: nil, photo_url_small: nil, source_url: nil, youtube_url: nil), Recipe(cuisine: "Filipino", name: "Adobo", photo_url_large: nil, photo_url_small: nil, source_url: nil, youtube_url: nil)]))
+    RecipeListView(recipeListViewModel: RecipeListViewModel(recipes: [Recipe(cuisine: "Italian", name: "Pasta", photoURLLarge: nil, photoURLSmall: nil, uuid: "1", sourceURL: nil, youtubeURL: nil), Recipe(cuisine: "Chinese", name: "Orange Chicken", photoURLLarge: nil, photoURLSmall: nil, uuid: "2", sourceURL: nil, youtubeURL: nil), Recipe(cuisine: "Filipino", name: "Adobo", photoURLLarge: nil, photoURLSmall: nil, uuid: "3", sourceURL: nil, youtubeURL: nil)]))
 }
