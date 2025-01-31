@@ -10,11 +10,12 @@ import Foundation
 @Observable class RecipeListViewModel {
     
     private enum Constants {
-        static let urlString: String = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json"
+        static let urlString: String = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes-malformed.json"
     }
     
     var recipes: [Recipe] = []
     var isLoading: Bool = true
+    var dataIsMalformed: Bool = false
     
     init(recipes: [Recipe] = []) {
         self.recipes = recipes
@@ -34,6 +35,10 @@ import Foundation
                     if let decodedRecipes: Recipes = try? decoder.decode(Recipes.self, from: data) {
                         self.recipes = decodedRecipes.recipes
                         self.isLoading = false
+                    } else {
+                        self.isLoading = false
+                        self.dataIsMalformed = true
+                        print("Malformed data")
                     }
                 }
             }

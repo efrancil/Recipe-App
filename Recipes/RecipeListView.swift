@@ -11,7 +11,11 @@ struct RecipeListView: View {
     @State var recipeListViewModel: RecipeListViewModel
     
     var body: some View {
-        if recipeListViewModel.recipes.isEmpty {
+        if recipeListViewModel.dataIsMalformed {
+            Text("There was an error retrieving the recipes. Please try again later")
+                .font(.headline)
+        }
+        else if recipeListViewModel.recipes.isEmpty {
             Text("No recipes are available")
                 .font(.headline)
         } else {
