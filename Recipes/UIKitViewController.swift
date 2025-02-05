@@ -1,33 +1,14 @@
 //
-//  ViewController.swift
+//  UIKitViewController.swift
 //  Recipes
 //
-//  Created by Ethan Franciliso on 1/27/25.
+//  Created by Ethan Franciliso on 2/4/25.
 //
 
+import Foundation
 import UIKit
-import SwiftUI
 
-//class ViewController: UIHostingController<RecipeListView> {
-//    
-//    private var recipeListViewModel: RecipeListViewModel = .init()
-//    
-//    required init?(coder: NSCoder) {
-//        super.init(coder: coder, rootView: RecipeListView(recipeListViewModel: recipeListViewModel))
-//    }
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        
-//        recipeListViewModel.getRecipes()
-//    }
-//    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//    }
-//}
-
-class ViewController: UIViewController {
+class UIKitViewController: UIViewController {
     
     private enum Constants {
         static let cellIdentifier: String = "recipe-cell"
@@ -69,7 +50,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
+extension UIKitViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

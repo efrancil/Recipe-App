@@ -10,7 +10,7 @@ import Foundation
 @Observable class RecipeListViewModel {
     
     private enum Constants {
-        static let urlString: String = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes-malformed.json"
+        static let urlString: String = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json"
     }
     
     var recipes: [Recipe] = []
@@ -21,7 +21,7 @@ import Foundation
         self.recipes = recipes
     }
     
-    func getRecipes() {
+    func getRecipes(completionHandler: @escaping () -> Void) {
         if let url: URL = URL(string: Constants.urlString) {
             let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
                 
@@ -35,6 +35,7 @@ import Foundation
                     if let decodedRecipes: Recipes = try? decoder.decode(Recipes.self, from: data) {
                         self.recipes = decodedRecipes.recipes
                         self.isLoading = false
+                        completionHandler()
                     } else {
                         self.isLoading = false
                         self.dataIsMalformed = true
