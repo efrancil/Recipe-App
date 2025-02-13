@@ -7,43 +7,52 @@
 
 import Foundation
 
-@Observable class RecipeListViewModel {
+@Observable
+final class RecipeListViewModel: Sendable {
     
     private enum Constants {
         static let urlString: String = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json"
     }
     
-    var recipes: [Recipe] = []
-    var isLoading: Bool = true
-    var dataIsMalformed: Bool = false
+    private(set) var recipes: [Recipe] = []
+    private(set) var isLoading: Bool = true
+    private(set) var dataIsMalformed: Bool = false
     
     init(recipes: [Recipe] = []) {
         self.recipes = recipes
     }
     
-    func getRecipes(completionHandler: @escaping () -> Void) {
+    func getRecipes(completionHandler: @escaping () -> Void) async {
         if let url: URL = URL(string: Constants.urlString) {
-            let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            do {
+                let (data, response) = try await URLSession.shared.data(from: url)
                 
-                guard let self else { return }
-                
-                if let error {
-                    print("Error: \(error.localizedDescription)")
-                } else if let data = data {
-                    print("Data received: \(data)")
-                    let decoder = JSONDecoder()
-                    if let decodedRecipes: Recipes = try? decoder.decode(Recipes.self, from: data) {
-                        self.recipes = decodedRecipes.recipes
-                        self.isLoading = false
-                        completionHandler()
-                    } else {
-                        self.isLoading = false
-                        self.dataIsMalformed = true
-                        print("Malformed data")
-                    }
+                guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
+                    print("Invalid status code")
+                    return
                 }
+                
+                guard (200...299).contains(statusCode) else {
+                    print("Invalid status code: \(statusCode)")
+                    return
+                }
+            
+                print("Data received: \(data)")
+                let decoder = JSONDecoder()
+                if let decodedRecipes: Recipes = try? decoder.decode(Recipes.self, from: data) {
+                    self.recipes = decodedRecipes.recipes
+                    self.isLoading = false
+                    completionHandler()
+                } else {
+                    self.isLoading = false
+                    self.dataIsMalformed = true
+                    print("Malformed data")
+                }
+                
+            } catch let error {
+                print("Error occured when calling API endpoint: \(error)")
             }
-            task.resume()
+                
         }
     }
     

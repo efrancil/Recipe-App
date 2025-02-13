@@ -22,11 +22,13 @@ class UIKitViewController: UIViewController {
         
         setupUI()
         layoutUI()
-        recipeListViewModel.getRecipes() { [weak self] in
-            guard let self else { return }
-            
-            DispatchQueue.main.async {
-                self.recipeTableView.reloadData()
+        Task {
+            try? await recipeListViewModel.getRecipes() { [weak self] in
+                guard let self else { return }
+                
+                DispatchQueue.main.async {
+                    self.recipeTableView.reloadData()
+                }
             }
         }
     }

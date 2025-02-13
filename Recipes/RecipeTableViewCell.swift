@@ -29,6 +29,7 @@ class RecipeTableViewCell: UITableViewCell {
     }
     
     private func setupUI() {
+        
     }
     
     private func layoutUI() {
