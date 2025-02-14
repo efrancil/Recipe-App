@@ -7,8 +7,10 @@
 
 import Foundation
 
+// In < iOS 17 we need to conform to ObservableObject while also marking
+// these properties with @Published
 @Observable
-final class RecipeListViewModel: Sendable {
+final class RecipeListViewModel {
     
     private enum Constants {
         static let urlString: String = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json"
@@ -22,7 +24,7 @@ final class RecipeListViewModel: Sendable {
         self.recipes = recipes
     }
     
-    func getRecipes(completionHandler: @escaping () -> Void) async {
+    func getRecipes() async {
         if let url: URL = URL(string: Constants.urlString) {
             do {
                 let (data, response) = try await URLSession.shared.data(from: url)
@@ -42,7 +44,6 @@ final class RecipeListViewModel: Sendable {
                 if let decodedRecipes: Recipes = try? decoder.decode(Recipes.self, from: data) {
                     self.recipes = decodedRecipes.recipes
                     self.isLoading = false
-                    completionHandler()
                 } else {
                     self.isLoading = false
                     self.dataIsMalformed = true

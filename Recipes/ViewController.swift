@@ -21,7 +21,7 @@ class ViewController: UIHostingController<RecipeListView> {
         
         // Create a concurrent environment since viewDidLoad() is a non-concurrent method
         Task {
-            await recipeListViewModel.getRecipes() {}
+            await recipeListViewModel.getRecipes()
         }
     }
     
