@@ -9,23 +9,20 @@ import Foundation
 
 // In < iOS 17 we need to conform to ObservableObject while also marking
 // these properties with @Published
-@Observable
-final class RecipeListViewModel {
+final class RecipeListViewModel: ObservableObject {
     
-    private enum Constants {
-        static let urlString: String = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json"
-    }
+    @Injected(\.urlPathProvider) var urlPathProvider: URLPathProviding
     
-    private(set) var recipes: [Recipe] = []
-    private(set) var isLoading: Bool = true
-    private(set) var dataIsMalformed: Bool = false
+    @Published private(set) var recipes: [Recipe] = []
+    @Published private(set) var isLoading: Bool = true
+    @Published private(set) var dataIsMalformed: Bool = false
     
     init(recipes: [Recipe] = []) {
         self.recipes = recipes
     }
     
     func getRecipes() async {
-        if let url: URL = URL(string: Constants.urlString) {
+        if let url: URL = URL(string: urlPathProvider.path) {
             do {
                 let (data, response) = try await URLSession.shared.data(from: url)
                 
@@ -42,12 +39,16 @@ final class RecipeListViewModel {
                 print("Data received: \(data)")
                 let decoder = JSONDecoder()
                 if let decodedRecipes: Recipes = try? decoder.decode(Recipes.self, from: data) {
-                    self.recipes = decodedRecipes.recipes
-                    self.isLoading = false
+                    DispatchQueue.main.async {
+                        self.recipes = decodedRecipes.recipes
+                        self.isLoading = false
+                    }
                 } else {
-                    self.isLoading = false
-                    self.dataIsMalformed = true
-                    print("Malformed data")
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.dataIsMalformed = true
+                        print("Malformed data")
+                    }
                 }
                 
             } catch let error {

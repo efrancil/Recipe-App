@@ -13,7 +13,8 @@ class ViewController: UIHostingController<RecipeListView> {
     private var recipeListViewModel: RecipeListViewModel = .init()
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder, rootView: RecipeListView(recipeListViewModel: recipeListViewModel))
+        InjectedValues[\.urlPathProvider] = URLAllRecipesPathProvider()
+        super.init(coder: coder, rootView: RecipeListView(recipeListViewModel: self.recipeListViewModel))
     }
 
     override func viewDidLoad() {

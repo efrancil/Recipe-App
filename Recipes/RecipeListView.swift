@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecipeListView: View {
-    @State var recipeListViewModel: RecipeListViewModel
+    @StateObject var recipeListViewModel: RecipeListViewModel
     
     var body: some View {
         if recipeListViewModel.dataIsMalformed {
