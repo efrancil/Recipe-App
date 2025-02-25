@@ -38,19 +38,18 @@ final class RecipeListViewModel: ObservableObject {
             
                 print("Data received: \(data)")
                 let decoder = JSONDecoder()
-                if let decodedRecipes: Recipes = try? decoder.decode(Recipes.self, from: data) {
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if let decodedRecipes: Recipes = try? decoder.decode(Recipes.self, from: data) {
                         self.recipes = decodedRecipes.recipes
                         self.isLoading = false
-                    }
-                } else {
-                    DispatchQueue.main.async {
+
+                    } else {
                         self.isLoading = false
                         self.dataIsMalformed = true
                         print("Malformed data")
+                        
                     }
                 }
-                
             } catch let error {
                 print("Error occured when calling API endpoint: \(error)")
             }
